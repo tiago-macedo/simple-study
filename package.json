@@ -1,0 +1,30 @@
+{
+  "name": "simple-study",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "serve": "nodemon index.js --ignore './client/'",
+    "postinstall": "npm install --prefix client && npm run build --prefix client",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run client\" \"npm run serve\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igorschechtel/simple-study.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/igorschechtel/simple-study/issues"
+  },
+  "homepage": "https://github.com/igorschechtel/simple-study#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0"
+  }
+}
