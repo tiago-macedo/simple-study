@@ -1,0 +1,42 @@
+.app{
+  min-height: 100vh;
+  background: white;
+  text-align: center;
+}
+
+.login{
+  height: 300px;
+  width: 300px;
+  background: lightblue;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 100px;
+  margin-left: 538px;
+}
+
+.title{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-right: 900px;
+}
+
+nav{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 10vh;
+  background: lightblue;
+  /*color: white;*/
+}
+
+.nav-links{
+  width: 10%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+}
