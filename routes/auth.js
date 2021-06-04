@@ -1,32 +1,31 @@
 const express = require("express");
 const router = express.Router();
-const firebase = require("firebase");
-// Required for side-effects
-require("firebase/firestore");
-const firebase_credentials = require("../.firebase_credentials")
+const admin = require('firebase-admin');
+const { hashPassword, checkPassword } = require("../utils/password");
 
-// Initialize Cloud Firestore through Firebase
-firebase.initializeApp({
-	apiKey: firebase_credentials.private_key,
-	authDomain: firebase_credentials.auth_uri,
-	projectId: firebase_credentials.project_id
+admin.initializeApp({
+  credential: admin.credential.applicationDefault()
 });
 
-var db = firebase.firestore();  
-
-const db = firebase
+const db = admin.firestore();
 
 // @route    POST api/auth/sign-up
 // @desc     Cria novo usuário
 // @access   Public
 router.post("/sign-up", async (req, res) => {
-	try {
-		const user = req.body;
-		res.status(response.status).json({ data: response.data });
-	} catch (error) {
-		console.log(error);
-		res.status(500).json({ error });
-	}
+  try {
+    const user = req.body;
+    await db.collection('users').doc(user.email).set({
+      email: user.email,
+      password: hashPassword(user.password),
+      isStudent: user.isStudent || false,
+      isProfessor: user.isProfessor || false,
+    });
+    res.status(200).json({ msg: "Usuário cadastrado com sucesso!" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
 });
 
 // @route    POST api/auth/sign-in
@@ -44,39 +43,47 @@ router.get("/sign-in", async (req, res) => {
 	try {
 		const username = req.body.username;
 		const password = req.body.password;
+		const users = db.collection("users");
+		var response = null;
+
 		// Find user in DB
 		user_is_known = false
-		db.collection("users").get().then((querySnapshot) => {
+		await users.get().then((querySnapshot) => {
 			querySnapshot.forEach((doc) => {
-				if (doc.user === username || doc.email === username) {
+				if (doc.email === username) {
 					user_is_known = true;
 				}
 			});
 		});
+
 		if (!user_is_known) {
 			response = {
-				code = 200,
-				data = "Unknown username or email"
+				code: 200,
+				data: "Unknown username or email"
 			}
 		}
 		
-		// check password
+		// Check password
+		await users.where("email", "==", username)
+			.get()
+			.then(querySnapshot => {
+				user = querySnapshot[0];
+				if ( !checkpassword(password, stored_password) ) {
+					response = {
+						code: 200,
+						data: "Wrong password"
+					}
+				}
+			});
+		
 
-		// temp
-		stored_password = "yeah yeah";
-
-		if (password !== stored_password) {
+		// If a known user gave correct password, let them in
+		if (!response) {
 			response = {
-				code = 200,
-				data = "Wrong password"
+				data: 123456789
 			}
+			res.status(200).json({ data: response.data });
 		}
-
-		// User gave correct password, let them in
-		response = {
-			data: 123456789
-		}
-		res.status(200).json({ data: response.data });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ error });
