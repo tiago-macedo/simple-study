@@ -46,29 +46,17 @@ router.get("/sign-in", async (req, res) => {
 		const users = db.collection("users");
 		var response = null;
 
-		// Find user in DB
-		user_is_known = false
-		await users.get().then((querySnapshot) => {
-			querySnapshot.forEach((doc) => {
-				if (doc.email === username) {
-					user_is_known = true;
-				}
-			});
-		});
-
-		if (!user_is_known) {
-			response = {
-				code: 200,
-				data: "Unknown username or email"
-			}
-		}
-		
-		// Check password
 		await users.where("email", "==", username)
 			.get()
 			.then(querySnapshot => {
 				user = querySnapshot[0];
-				if ( !checkpassword(password, stored_password) ) {
+				if ( !user ) {
+					response = {
+						code: 200,
+						data: "Wrong password"
+					}
+				}
+				else if ( !checkpassword(password, stored_password) ) {
 					response = {
 						code: 200,
 						data: "Wrong password"
