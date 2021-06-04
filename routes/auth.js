@@ -41,12 +41,14 @@ router.get("/sign-in", async (req, res) => {
 	*
 	*/
 	try {
+		console.log("I have recieved a user, trying to enter.")
+		console.log(req.body)
 		const username = req.body.username;
 		const password = req.body.password;
 		const users = db.collection("users");
 		var response = null;
 
-		await users.where("email", "==", username)
+		users.where("email", "==", username)
 			.get()
 			.then(querySnapshot => {
 				user = querySnapshot[0];
@@ -56,7 +58,7 @@ router.get("/sign-in", async (req, res) => {
 						data: "Wrong password"
 					}
 				}
-				else if ( !checkpassword(password, stored_password) ) {
+				else if ( !checkpassword(password, user.password) ) {
 					response = {
 						code: 200,
 						data: "Wrong password"
