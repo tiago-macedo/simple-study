@@ -31,7 +31,7 @@ router.post("/sign-up", async (req, res) => {
 // @route    POST api/auth/sign-in
 // @desc     Loga o usuário
 // @access   Public
-router.get("/sign-in", async (req, res) => {
+router.post("/sign-in", async (req, res) => {
 	/*
 	* Expects:
 	* {
@@ -41,12 +41,7 @@ router.get("/sign-in", async (req, res) => {
 	*
 	*/
 	try {
-		console.log("I have recieved a user, trying to enter.")
-		console.log(req.body)
-		const email = req.body.email;
-		const password = req.body.password;
-		const users = db.collection("users");
-		var response = null;
+		const {email, password} = req.body;
 
 		const querySnapshot = await await users.doc(email).get();
 		const user = querySnapshot.data();
@@ -74,8 +69,11 @@ router.get("/sign-in", async (req, res) => {
 			}
 		}
 
-		// Send the response
-		res.status(response.code).json({ data: response.data });
+    if(!checkPassword(password, user.password)) {
+      return res.status(401).json({msg: "Wrong password"})
+    }
+		
+    res.status(200).json({msg: "Login successful"});
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ error });
