@@ -35,7 +35,7 @@ router.get("/sign-in", async (req, res) => {
 	/*
 	* Expects:
 	* {
-	* 	username: <username>
+	* 	email: <username>
 	* 	password: <password>
 	* }
 	*
@@ -43,37 +43,43 @@ router.get("/sign-in", async (req, res) => {
 	try {
 		console.log("I have recieved a user, trying to enter.")
 		console.log(req.body)
-		const username = req.body.username;
+		const email = req.body.email;
 		const password = req.body.password;
 		const users = db.collection("users");
 		var response = null;
 
-		users.where("email", "==", username)
-			.get()
-			.then(querySnapshot => {
-				user = querySnapshot[0];
-				if ( !user ) {
-					response = {
-						code: 200,
-						data: "Wrong password"
-					}
-				}
-				else if ( !checkpassword(password, user.password) ) {
-					response = {
-						code: 200,
-						data: "Wrong password"
-					}
-				}
-			});
+		const querySnapshot = await users.where("email", "==", email).get()
+		console.log("the snapshot is:")
+		console.log(querySnapshot)
+		const user = querySnapshot[0];
+		console.log("the user is:")
+		console.log(user)
+		if ( !user ) {
+			console.log("no user")
+			response = {
+				code: 200,
+				data: "Wrong user"
+			}
+		}
+		else if ( !checkpassword(password, user.password) ) {
+			console.log("bad pass")
+			response = {
+				code: 200,
+				data: "Wrong password"
+			}
+		}
 		
 
 		// If a known user gave correct password, let them in
 		if (!response) {
 			response = {
-				data: 123456789
+				code: 200,
+				data: "😎 I'm in."
 			}
-			res.status(200).json({ data: response.data });
 		}
+
+		// Send the response
+		res.status(response.code).json({ data: response.data });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ error });
