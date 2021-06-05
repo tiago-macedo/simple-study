@@ -5,6 +5,7 @@ function SignUp(){
     const [access, setAccess] = useState(false);
     const [email, setEmail] = useState(null)
     const [senha, setSenha] = useState(null)
+    const [tipo, setTipo] = useState("Aluno")
 
     const enter = () => {
         setAccess(true)
@@ -18,13 +19,22 @@ function SignUp(){
         setSenha(senha.target.value)
     }
 
+    function getTipo(tipo){
+        setTipo(tipo.target.value)
+    }
+
     return(
         <div className="login">
-            <h2>Registre sua conta</h2>
-            <h3>E-mail</h3>
+            <h3>Registre sua conta</h3>
+            <h4>E-mail:</h4>
             <input type="text" onChange={getEmail} />
-            <h3>Senha</h3>
+            <h4>Senha:</h4>
             <input type="text" onChange={getSenha} />
+            <h4>Tipo de conta:</h4>
+            <select onChange={getTipo} value={tipo}>
+                <option value="Aluno">Aluno</option>
+                <option value="Professor">Professor</option>
+            </select>
             <button onClick={enter}>Registrar</button>
         </div>
     );
