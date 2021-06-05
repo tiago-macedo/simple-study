@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+const authRouter = express.Router();
 const admin = require('firebase-admin');
 const { hashPassword, checkPassword } = require("../utils/password");
 
@@ -12,7 +12,7 @@ const db = admin.firestore();
 // @route    POST api/auth/sign-up
 // @desc     Cria novo usuário
 // @access   Public
-router.post("/sign-up", async (req, res) => {
+authRouter.post("/sign-up", async (req, res) => {
   try {
     const user = req.body;
     await db.collection('users').doc(user.email).set({
@@ -31,11 +31,11 @@ router.post("/sign-up", async (req, res) => {
 // @route    GET api/auth/sign-in
 // @desc     Loga o usuário
 // @access   Public
-router.get("/sign-in", async (req, res) => {
+authRouter.get("/sign-in", async (req, res) => {
 	/*
 	* Expects:
 	* {
-	* 	email: <username>
+	* 	email: <user-email>
 	* 	password: <password>
 	* }
 	*
@@ -79,4 +79,4 @@ router.get("/sign-in", async (req, res) => {
 	}
   });
 
-module.exports = router;
+module.exports = authRouter;
