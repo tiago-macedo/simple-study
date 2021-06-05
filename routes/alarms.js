@@ -52,6 +52,7 @@ alarmsRouter.post("/", async (req, res) => {
 	 * 
 	 */
 	try {
+		let response = null;
 		const {email, token, alarm} = req.body;
 		const alarms = db.collection('alarms');
 
@@ -64,7 +65,14 @@ alarmsRouter.post("/", async (req, res) => {
 		});
 		const new_alarm_data = (await new_alarm.get()).data()
 
-		res.status(200).json(new_alarm_data);
+		if (!response) {
+			response = {
+				status: 200,
+				data: new_alarm_data
+			}
+		}
+
+		res.status(response.status).json(response.data);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ error });
