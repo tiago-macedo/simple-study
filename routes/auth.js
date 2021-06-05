@@ -28,10 +28,10 @@ router.post("/sign-up", async (req, res) => {
   }
 });
 
-// @route    POST api/auth/sign-in
+// @route    GET api/auth/sign-in
 // @desc     Loga o usuário
 // @access   Public
-router.post("/sign-in", async (req, res) => {
+router.get("/sign-in", async (req, res) => {
 	/*
 	* Expects:
 	* {
@@ -41,9 +41,11 @@ router.post("/sign-in", async (req, res) => {
 	*
 	*/
 	try {
+		let response = false;
 		const {email, password} = req.body;
+		const users = db.collection('users')
 
-		const querySnapshot = await await users.doc(email).get();
+		const querySnapshot = await users.doc(email).get();
 		const user = querySnapshot.data();
 		if ( !user ) {
 			response = {
@@ -65,15 +67,12 @@ router.post("/sign-in", async (req, res) => {
 		if (!response) {
 			response = {
 				code: 200,
-				data: "😎 I'm in."
+				data: "Login successful"
 			}
 		}
-
-    if(!checkPassword(password, user.password)) {
-      return res.status(401).json({msg: "Wrong password"})
-    }
 		
-    res.status(200).json({msg: "Login successful"});
+		res.status(response.code).json({msg: response.data});
+
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ error });
