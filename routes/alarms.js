@@ -13,7 +13,7 @@ alarmsRouter.get("/", async (req, res) => {
 	/*
 	 * Expects:
 	 * {
-	 *   email: <user-email>
+	 *  	email: <user-email>
 	 * }
 	 * 
 	 */
@@ -29,6 +29,42 @@ alarmsRouter.get("/", async (req, res) => {
 		});
 
 		res.status(200).json(data);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ error });
+	}
+});
+
+// @route    POST api/alarms/
+// @desc     Cria novo alarme.
+// @access   Public
+alarmsRouter.post("/", async (req, res) => {
+	/*
+	 * Expects:
+	 * {
+	 *  	email: <user-email>,
+	 *  	token: <access-token>,
+	 *  	alarm: {
+	 * 			name: <alarm-name>,
+	 * 			when: <alarm-date-and-time>
+	 * 		}
+	 * }
+	 * 
+	 */
+	try {
+		const {email, token, alarm} = req.body;
+		const alarms = db.collection('alarms');
+
+		// TODO: check token
+
+		// Add the alarm
+		const new_alarm = await alarms.add({
+			name: alarm.name,
+			time: alarm.when,
+		});
+		const new_alarm_data = (await new_alarm.get()).data()
+
+		res.status(200).json(new_alarm_data);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ error });
