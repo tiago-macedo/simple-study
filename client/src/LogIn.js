@@ -20,10 +20,10 @@ function LogIn(){
 
     return(
         <div className="login">
-            <h2>Acesse sua conta</h2>
-            <h3>E-mail</h3>
+            <h3>Acesse sua conta</h3>
+            <h4>E-mail:</h4>
             <input type="text" onChange={getEmail} />
-            <h3>Senha</h3>
+            <h4>Senha:</h4>
             <input type="text" onChange={getSenha} />
             <button onClick={enter}>Acessar</button>
         </div>
