@@ -22,6 +22,7 @@ if (configs.forceHttps && process.env.NODE_ENVIRONMENT === "production") {
 
 // Rotas
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/alarms", require("./routes/alarms"));
 
 // Serve client on production
 if (process.env.NODE_ENVIRONMENT === "production") {

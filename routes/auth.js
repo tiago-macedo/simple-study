@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+const authRouter = express.Router();
 const admin = require('firebase-admin');
 const { hashPassword, checkPassword } = require("../utils/password");
 
@@ -12,7 +12,7 @@ const db = admin.firestore();
 // @route    POST api/auth/sign-up
 // @desc     Cria novo usuário
 // @access   Public
-router.post("/sign-up", async (req, res) => {
+authRouter.post("/sign-up", async (req, res) => {
   try {
     const user = req.body;
     await db.collection('users').doc(user.email).set({
@@ -28,39 +28,55 @@ router.post("/sign-up", async (req, res) => {
   }
 });
 
-// @route    POST api/auth/sign-in
+// @route    GET api/auth/sign-in
 // @desc     Loga o usuário
 // @access   Public
-router.post("/sign-in", async (req, res) => {
+authRouter.get("/sign-in", async (req, res) => {
 	/*
 	* Expects:
 	* {
-	* 	email: <username>
+	* 	email: <user-email>
 	* 	password: <password>
 	* }
 	*
 	*/
 	try {
+		let response = false;
 		const {email, password} = req.body;
+		const users = db.collection('users')
 
-		const snapshot = await db.collection("users").where("email", "==", email).get();
-    if(snapshot.empty) {
-      return res.status(404).json({msg: "User not found"});
-    }
-    let user;
-    snapshot.forEach(doc => {
-      user = doc.data();
-    });
+		const querySnapshot = await users.doc(email).get();
+		const user = querySnapshot.data();
+		if ( !user ) {
+			response = {
+				code: 200,
+				data: "Wrong user"
+			}
+		}
+		else {
+			const match = await checkPassword(password, user.password);
+			if ( !match ) {
+				response = {
+					code: 200,
+					data: "Wrong password"
+				}
+			}
+		}
 
-    if(!checkPassword(password, user.password)) {
-      return res.status(401).json({msg: "Wrong password"})
-    }
+		// If a known user gave correct password, let them in
+		if (!response) {
+			response = {
+				code: 200,
+				data: "Login successful"
+			}
+		}
 		
-    res.status(200).json({msg: "Login successful"});
+		res.status(response.code).json({msg: response.data});
+
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ error });
 	}
   });
 
-module.exports = router;
+module.exports = authRouter;
