@@ -13,17 +13,27 @@ const db = admin.firestore();
 // @desc     Cria novo usuário
 // @access   Public
 authRouter.post("/sign-up", async (req, res) => {
-  try {
-    const user = req.body;
-    await db.collection('users').doc(user.email).set({
-      email: user.email,
-      password: hashPassword(user.password),
-      isStudent: user.isStudent || false,
-      isProfessor: user.isProfessor || false,
-    });
-    res.status(200).json({ msg: "Usuário cadastrado com sucesso!" });
-  } catch (error) {
-    console.log(error);
+  try 
+  {
+	  const user = req.body;
+
+	  const doc =
+	  {
+		  email: user.email,
+		  password: hashPassword(user.password),
+		  isStudent: user.isStudent || false,
+		  isProfessor: user.isProfessor || false,
+	  };
+
+
+	  const result = await db.collection('users').doc(user.email).set(doc);
+
+	  res.status(200).json({ msg: "Usuário cadastrado com sucesso!" });
+  } 
+  catch (error) 
+  {
+    console.log("An error has occurred: ", error);
+
     res.status(500).json({ error });
   }
 });
@@ -32,32 +42,33 @@ authRouter.post("/sign-up", async (req, res) => {
 // @desc     Loga o usuário
 // @access   Public
 authRouter.get("/sign-in", async (req, res) => {
-	/*
-	* Expects:
-	* {
-	* 	email: <user-email>
-	* 	password: <password>
-	* }
-	*
-	*/
-	try {
+	try 
+	{
 		let response = false;
-		const {email, password} = req.body;
+
+		console.log("request querystring: ", req.query);
+		
+		const { email, password } = req.query;
+
 		const users = db.collection('users')
 
 		const querySnapshot = await users.doc(email).get();
+
 		const user = querySnapshot.data();
-		if ( !user ) {
+
+		if ( !user ) 
+		{
 			response = {
-				code: 200,
+				code: 404,
 				data: "Wrong user"
 			}
 		}
-		else {
+		else 
+		{
 			const match = await checkPassword(password, user.password);
 			if ( !match ) {
 				response = {
-					code: 200,
+					code: 403,
 					data: "Wrong password"
 				}
 			}
@@ -73,7 +84,9 @@ authRouter.get("/sign-in", async (req, res) => {
 		
 		res.status(response.code).json({msg: response.data});
 
-	} catch (error) {
+	} 
+	catch (error) 
+	{
 		console.log(error);
 		res.status(500).json({ error });
 	}
