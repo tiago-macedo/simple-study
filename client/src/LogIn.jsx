@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import APIService from "./APIService";
+import { useHistory } from "react-router-dom";
+import NavBar from "./NavBar";
 import './App.css'
 
 function LogIn()
 {
+    const history = useHistory();
     const [access, setAccess] = useState(false);
     const [email, setEmail] = useState(null)
     const [password, setPwd] = useState(null)
@@ -24,6 +27,7 @@ function LogIn()
         if(res)
         {
             window.alert("Success");
+            history.push("/home");
         }
         else
         {
@@ -45,20 +49,24 @@ function LogIn()
     }
 
     return(
-        <div className="login">
-            
-            <h3>Acesse sua conta</h3>
+        <div>
+            <NavBar />
+            <div className="login">
+                
+                
+                <h3>Acesse sua conta</h3>
 
-            <h4>E-mail:</h4>
+                <h4>E-mail:</h4>
 
-            <input type="text" onChange={getEmail} />
+                <input type="text" onChange={getEmail} />
 
-            <h4>Senha:</h4>
+                <h4>Senha:</h4>
 
-            <input type="text" onChange={getPwd} />
+                <input type="text" onChange={getPwd} />
 
-            <button onClick={enter}>Acessar</button>
+                <button onClick={enter}>Acessar</button>
 
+            </div>
         </div>
     );
 }

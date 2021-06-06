@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import APIService from './APIService';
+import { useHistory } from "react-router-dom";
 import './App.css'
+import NavBar from './NavBar';
 
 function SignUp()
 {
+    const history = useHistory();
     const [access, setAccess] = useState(false);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
@@ -27,6 +30,7 @@ function SignUp()
         if(res)
         {
             window.alert("Sign up Succeeded");
+            history.push("home");
         }
         else
         {
@@ -52,30 +56,33 @@ function SignUp()
     }
 
     return(
-        <div className="login">
+        <div>
+            <NavBar/>
+            <div className="login">
 
-            <h3>Registre sua conta</h3>
+                <h3>Registre sua conta</h3>
 
-            <h4>E-mail:</h4>
+                <h4>E-mail:</h4>
 
-            <input type="text" onChange={getEmail} />
+                <input type="text" onChange={getEmail} />
 
-            <h4>Senha:</h4>
+                <h4>Senha:</h4>
 
-            <input type="text" onChange={getSenha} />
+                <input type="text" onChange={getSenha} />
 
-            <h4>Tipo de conta:</h4>
+                <h4>Tipo de conta:</h4>
 
-            <select onChange={getTipo} value={tipo}>
+                <select onChange={getTipo} value={tipo}>
 
-                <option value="Aluno">Aluno</option>
+                    <option value="Aluno">Aluno</option>
 
-                <option value="Professor">Professor</option>
+                    <option value="Professor">Professor</option>
 
-            </select>
+                </select>
 
-            <button onClick={enter}>Registrar</button>
+                <button onClick={enter}>Registrar</button>
 
+            </div>
         </div>
     );
 }
