@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import './App.css'
+import {Link, withRouter} from 'react-router-dom';
 
 function SignUp(){
     const [access, setAccess] = useState(false);
@@ -35,7 +36,9 @@ function SignUp(){
                 <option value="Aluno">Aluno</option>
                 <option value="Professor">Professor</option>
             </select>
-            <button onClick={enter}>Registrar</button>
+            {email == "a" &&
+                <ul className="nav-links"><li><Link to="/home"><button onClick={enter}>Registrar</button></Link></li></ul>
+            }
         </div>
     );
 }

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import './App.css'
+import {Link, withRouter} from 'react-router-dom';
 
 function LogIn(){
     const [access, setAccess] = useState(false);
@@ -25,7 +26,9 @@ function LogIn(){
             <input type="text" onChange={getEmail} />
             <h4>Senha:</h4>
             <input type="text" onChange={getSenha} />
-            <button onClick={enter}>Acessar</button>
+            {email == "a" &&
+                <ul className="nav-links"><li><Link to="/home"><button onClick={enter}>Acessar</button></Link></li></ul>
+            }
         </div>
     );
 }
