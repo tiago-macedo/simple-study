@@ -3,6 +3,7 @@ import LogIn from './LogIn';
 import SignUp from "./SignUp"
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import NavBar from "./NavBar";
+import SSHome from "./SSHome";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/login" exact component={LogIn} />
           <Route path="/signup" exact component={SignUp} />
+          <Route path="/home" exact component={SSHome} />
         </Switch>
       </div>
     </Router>
