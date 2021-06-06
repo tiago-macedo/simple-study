@@ -17,7 +17,8 @@ alarmsRouter.get("/", async (req, res) => {
 	 * }
 	 * 
 	 */
-	try {
+	try 
+	{
 		const email = req.body.email;
 		const alarms = db.collection('alarms');
 		const data = { alarms: [] };
@@ -29,7 +30,9 @@ alarmsRouter.get("/", async (req, res) => {
 		});
 
 		res.status(200).json(data);
-	} catch (error) {
+	}
+	catch (error)
+	{
 		console.log(error);
 		res.status(500).json({ error });
 	}
