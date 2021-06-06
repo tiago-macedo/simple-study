@@ -40,3 +40,50 @@ nav{
   align-items: center;
   list-style: none;
 }
+
+.welcome{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: lightblue;
+  min-height: 10vh;
+}
+
+.alarm{
+  height: 60px;
+  width: 200px;
+  background: lightblue;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 50px;
+  margin-left: 580px;
+}
+
+.alarms{
+  height: 300px;
+  width: 300px;
+  background: white;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 30px;
+  margin-left: 538px;
+}
+
+.date{
+  height: 40px;
+  width: 450px;
+  background: lightblue;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: line;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 460px;
+}
