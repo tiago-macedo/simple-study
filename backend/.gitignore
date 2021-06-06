@@ -89,3 +89,6 @@ client/.env.production.local
 client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
+
+**/node_modules/**
+**/build/**
