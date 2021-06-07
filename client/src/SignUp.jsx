@@ -57,7 +57,6 @@ function SignUp()
 
     return(
         <div>
-            <NavBar/>
             <div className="login">
 
                 <h3>Registre sua conta</h3>

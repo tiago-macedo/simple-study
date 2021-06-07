@@ -50,7 +50,6 @@ function LogIn()
 
     return(
         <div>
-            <NavBar />
             <div className="login">
                 
                 

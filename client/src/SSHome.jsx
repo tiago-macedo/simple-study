@@ -6,8 +6,6 @@ function SSHome()
 {
     return(
         <div>
-            <h1>Simple Study Home Page</h1>
-            <Grade></Grade>
         </div>
     )
 }

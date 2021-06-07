@@ -12,6 +12,9 @@ function NavBar(){
             <h1 className="title">Simple Study</h1>
             <ul className="nav-links">
                 <li>
+                    <Link style={navStyle} to="/classes">Suas matérias</Link>
+                </li>
+                <li>
                     <Link style={navStyle} to="/login">LogIn</Link>
                 </li>
                 <li>
