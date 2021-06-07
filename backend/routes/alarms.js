@@ -10,15 +10,8 @@ const db = admin.firestore();
 // @desc     Retorna dados dos alarmes de um usuário
 // @access   Public
 alarmsRouter.get("/", async (req, res) => {
-	/*
-	 * Expects:
-	 * {
-	 *  	email: <user-email>
-	 * }
-	 * 
-	 */
 	try {
-		const email = req.body.email;
+		const email = req.query.email;
 		const alarms = db.collection('alarms');
 		const data = { alarms: [] };
 
@@ -64,6 +57,7 @@ alarmsRouter.post("/", async (req, res) => {
 			name: alarm.name,
 			time: alarm.when,
 		});
+
 		const new_alarm_data = (await new_alarm.get()).data()
 
 		if (!response) {
@@ -79,5 +73,56 @@ alarmsRouter.post("/", async (req, res) => {
 		res.status(500).json({ error });
 	}
 });
+
+alarmsRouter.delete("/", async (req, res) => {
+	try
+	{
+		let response = null;
+		const {email, name, time} = req.query;
+
+		const alarms = db.collection('alarms');
+
+		const doc = await alarms.where("name", "==", name)
+			.where("email", "==", email)
+			.where("time", "==", time).get();
+		
+		if(!doc || !doc.docs || doc.docs.length <= 0)
+		{
+			response = 
+			{
+				status: 404, 
+				data: { ...req.query, msg: "Object not found"}
+			}
+		}
+
+		const result = await alarms.doc(doc.docs[0].id).delete();
+
+		if (result) 	
+		{
+			response = 
+			{
+				status: 200,
+				data: { ...req.query, msg: "Deleted"}
+			}
+		}
+		else 
+		{
+			response = 
+			{
+				status: 400,
+				data: { ...req.query, msg: "Couldn't delete"}
+			}
+		}
+
+		res.status(response.status).json(response.data);
+
+	} 
+	catch (error) 
+	{
+		console.log(error);
+		res.status(500).json({ ...req.query, msg: "Error", error});
+	}
+});
+
 
 module.exports = alarmsRouter;

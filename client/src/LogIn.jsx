@@ -26,7 +26,10 @@ function LogIn()
 
         if(res)
         {
+            localStorage.setItem("email", email);
+            
             window.alert("Success");
+
             history.push("/home");
         }
         else

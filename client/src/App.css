@@ -40,3 +40,52 @@ nav{
   align-items: center;
   list-style: none;
 }
+
+.welcome{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: lightblue;
+  min-height: 10vh;
+}
+
+.alarm{
+  height: 60px;
+  width: 200px;
+  background: lightblue;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 50px;
+  margin-left: 580px;
+}
+
+.alarms{
+  height: 300px;
+  width: 300px;
+  background: white;
+  border-radius: 5px;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center; */
+  margin-top: 15px;
+  margin-left: 538px;
+  overflow-y: scroll;
+}
+
+.date{
+  height: 80px;
+  width: 450px;
+  background: lightblue;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: line;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 460px;
+  margin-bottom: 10px;
+}

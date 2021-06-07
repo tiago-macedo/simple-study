@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node index.js",
     "serve": "nodemon index.js --ignore './client/'",
-    "postinstall": "npm install --prefix client && npm run build --prefix client",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run client\" \"npm run serve\""
   },
