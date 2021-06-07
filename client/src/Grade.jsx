@@ -21,6 +21,21 @@ function Grade(props){
             "nome": "Sistemas de Informação",
             "horario": "60",
             "periodo": "1"
+        },
+        "MAB120": {
+            "nome": "Computacao I (CC)",
+            "horario": "90",
+            "periodo": "1"
+        },
+        "MAB624": {
+            "nome": "Números Inteiros Criptografia",
+            "horario": "90",
+            "periodo": "1"
+        },
+        "MAE111": {
+            "nome": "Cálculo Infinitesimal I",
+            "horario": "90",
+            "periodo": "1"
         }
     }
 
