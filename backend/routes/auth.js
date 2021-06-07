@@ -23,6 +23,7 @@ authRouter.post("/sign-up", async (req, res) => {
 		  password: hashPassword(user.password),
 		  isStudent: user.isStudent || false,
 		  isProfessor: user.isProfessor || false,
+		  classes: []
 	  };
 
 
