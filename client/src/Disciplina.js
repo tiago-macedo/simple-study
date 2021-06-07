@@ -1,4 +1,5 @@
 import React from 'react';
+import DisciplinaStyle from './DisciplinaStyle';
 
 function Disciplina(props){
 

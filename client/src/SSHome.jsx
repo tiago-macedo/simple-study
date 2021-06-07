@@ -1,10 +1,14 @@
 import React, {useState} from 'react';
+import Grade from './Grade';
 import './App.css'
 
 function SSHome()
 {
     return(
-        <div>Simple Study Home Page</div>
+        <div>
+            <h1>Simple Study Home Page</h1>
+            <Grade></Grade>
+        </div>
     )
 }
 

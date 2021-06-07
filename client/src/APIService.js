@@ -80,4 +80,25 @@ export default class APIService
 
         return false;
     }
+
+    async getAlarms(email)
+    {
+        try
+        {
+            const url = `${this.baseURL}/classes`;
+            const reqBody = { "email": email };
+            const res = await axios.get(url, reqBody);
+
+            return res.data.classes;
+
+            console.log(res.status, res.statusText, res.data);
+        }
+        catch(err)
+        {
+            if (err.req) {
+                const res = err.res;
+                console.log(res.status, res.statusText, res.data);
+            }
+        }
+    }
 }

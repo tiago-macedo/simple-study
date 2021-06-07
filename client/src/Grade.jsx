@@ -1,12 +1,33 @@
 import React from 'react';
+import APIService from './APIService';
 
 import Disciplina from './Disciplina'
 
 function Grade(props){
+    const disciplinas = {
+        "MAB111": {
+            "nome": "Fundamentos da Computação Digital",
+            "horario": "60",
+            "periodo": "1"
+        },
+        "MAB112": {
+            "nome": "Sistemas de Informação",
+            "horario": "60",
+            "periodo": "1"
+        }
+    }
 
-    return(
+    const api = new APIService();
+    const list = APIService.getAlarms("teste@gmail.com");
+
+    return (
         <div className="grade">
-            <Disciplina nome="Fund da Computação Digital" codigo="MAB111" Horario="60" Periodo="1"/>
+            {
+                list.forEach((code) => {
+                    return <Disciplina nome={disciplinas[code].nome} codigo={code} Horario={disciplinas[code].horario} Periodo={disciplinas[code].periodo} feito="True"/>
+                })
+            }
+            {/* <Disciplina nome="Fund da Computação Digital" codigo="MAB111" Horario="60" Periodo="1" feito="True"/>
             <Disciplina nome="Sistemas de Informação" codigo="MAB112" Horario="60" Periodo="1"/>
             <Disciplina nome="Computacao I (CC)" codigo="MAB120" Horario="90" Periodo="1"/>
             <Disciplina nome="Números Inteiros Criptografia" codigo="MAB624" Horario="90" Periodo="1"/>
@@ -46,7 +67,7 @@ function Grade(props){
             <Disciplina nome="Sistemas Operacionais I" codigo="MAB366" Horario="60" Periodo="7"/>
             <Disciplina nome="Avaliação e Desempenho" codigo="MAB515" Horario="60" Periodo="7"/>
 
-            <Disciplina nome="Teleprocessamento e Redes" codigo="MAB510" Horario="60" Periodo="8"/>
+            <Disciplina nome="Teleprocessamento e Redes" codigo="MAB510" Horario="60" Periodo="8"/> */}
         </div>
     )
 }
