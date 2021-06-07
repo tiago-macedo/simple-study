@@ -1,188 +1,128 @@
-import React, {useState} from 'react';
-import './App.css'
+import React, {useState, useEffect} from 'react';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import AlarmIcon from '@material-ui/icons/Alarm';
+import DeleteIcon from '@material-ui/icons/Delete';
+import APIService from "./APIService";
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import './App.css';
+
+const api = new APIService();
 
 function SSHome()
 {   
-    const [hora, setHora] = useState("00");
-    const [minuto, setMinuto] = useState("00");
-    const [dia, setDia] = useState("01");
-    const [mes, setMes] = useState("01");
-    const [nome, setNome] = useState(null);
+    const [alarms, setAlarms] = useState([]);
+    const [name, setName] = useState("");
+    const [when, setWhen] = useState("");
 
-    function getHora(hora)
+    useEffect(() => {
+        const email = localStorage.getItem("email");
+
+        api.getAlarms(email).then(
+            (v) => {
+                console.log("alarms: ", v.alarms);
+                setAlarms(v.alarms);
+            })
+    }, [])
+
+    function remove(a)
     {
-        setHora(hora.target.value)
+        const email = localStorage.getItem("email");
+
+        api.delAlarms(email, a.name, a.time).then(v => console.log("deleted: ", v));
+
+        const newAlarms = alarms.filter( v => v.name !== a.name );
+
+        console.log(newAlarms);
+
+        setAlarms(newAlarms);
     }
 
-    function getMinuto(minuto)
+    const createAlarm = async () => 
     {
-        setMinuto(minuto.target.value)
-    }
+        if(!name || !when)
+        {
+            window.alert("Configure o alarm antes de cria-lo");
 
-    function getDia(dia)
-    {
-        setDia(dia.target.value)
-    }
+            return;
+        }
 
-    function getMes(mes)
-    {
-        setMes(mes.target.value)
-    }
+        const email = localStorage.getItem("email");
 
-    function getNome(nome)
-    {
-        setNome(nome.target.value)
+        const res = await api.addAlarm(email, name, when);
+
+        if (!res)
+        {
+            window.alert("Nao foi possível criar o alarme");
+
+            return;
+        }
+
+        window.alert("Alarme criado");
+
+        const newAlarm = alarms.concat([{ name, time: when }]);
+
+            console.log("newAlarm", newAlarm);
+
+            setAlarms(newAlarm);
     }
 
     return(
         <div>
-            <div className="welcome"><h1>Bem-vindo!</h1></div>
-            <h2 className="alarm">Alarmes</h2>
+            <div className="welcome">
+                <h1>Bem-vindo!</h1>
+            </div>
+
+            <h2 className="alarm">
+                Alarmes
+            </h2>
+
             <div className="alarms">
-                <h3>Alarme</h3>
+                <List aria-label="main mailbox folders">
+                    {
+                        alarms.map((a) => 
+                        {
+                            return (
+                                <ListItem button id={a.name}>
+                                    <ListItemIcon>
+                                        <AlarmIcon />
+                                    </ListItemIcon>
+
+                                    <ListItemText>
+                                        {a.name} @ {a.time}
+                                    </ListItemText>
+
+                                    <ListItemIcon>
+                                        <DeleteIcon onClick={() => remove(a)} />
+                                    </ListItemIcon>
+                                </ListItem>
+                            )
+                        })
+                    }
+                    
+                </List>
             </div>
+
             <div className="date">
-                <input type="text" onChange={getNome}></input>
-                <select onChange={getDia} value={dia}>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                        <option value="24">24</option>
-                        <option value="25">25</option>
-                        <option value="26">26</option>
-                        <option value="27">27</option>
-                        <option value="28">28</option>
-                        <option value="29">29</option>
-                        <option value="30">30</option>
-                        <option value="31">31</option>
-                </select>
-                <h6>/</h6>
-                <select select onChange={getMes} value={mes}>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                </select>
-                <select onChange={getHora} value={hora}>
-                        <option value="00">00</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                </select>
-                <h6>:</h6>
-                <select onChange={getMinuto} value={minuto}>
-                        <option value="00">00</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                        <option value="24">24</option>
-                        <option value="25">25</option>
-                        <option value="26">26</option>
-                        <option value="27">27</option>
-                        <option value="28">28</option>
-                        <option value="29">29</option>
-                        <option value="30">30</option>
-                        <option value="31">31</option>
-                        <option value="32">32</option>
-                        <option value="33">33</option>
-                        <option value="34">34</option>
-                        <option value="35">35</option>
-                        <option value="36">36</option>
-                        <option value="37">37</option>
-                        <option value="38">38</option>
-                        <option value="39">39</option>
-                        <option value="40">40</option>
-                        <option value="41">41</option>
-                        <option value="42">42</option>
-                        <option value="43">43</option>
-                        <option value="44">44</option>
-                        <option value="45">45</option>
-                        <option value="46">46</option>
-                        <option value="47">47</option>
-                        <option value="48">48</option>
-                        <option value="49">49</option>
-                        <option value="50">50</option>
-                        <option value="51">51</option>
-                        <option value="52">52</option>
-                        <option value="53">53</option>
-                        <option value="54">54</option>
-                        <option value="55">55</option>
-                        <option value="56">56</option>
-                        <option value="57">57</option>
-                        <option value="58">58</option>
-                        <option value="59">59</option>
-                </select>
+                {/* <input type="text" ></input> */}
+                <TextField id="standard-basic" label="Standard" onChange={e => setName(e.target.value)} />
+
+                <TextField
+                    id="datetime-local"
+                    label="Next appointment"
+                    type="datetime-local"
+                    defaultValue={new Date().toISOString()}
+                    InputLabelProps={{
+                    shrink: true,
+                    }}
+                    onChange={e => setWhen(e.target.value)}
+                />
+
             </div>
-            <button>Criar Alarme</button>
-            <button>Deletar Alarme</button>
+            <Button variant="contained" color="primary" onClick={createAlarm}>Criar Alarme</Button>
         </div>
     )
 }

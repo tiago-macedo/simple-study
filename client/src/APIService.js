@@ -80,4 +80,98 @@ export default class APIService
 
         return false;
     }
+
+    async addAlarm(email, alarm, date)
+    {
+        try
+        {
+            const url = `${this.baseURL}/alarms`;
+
+            const reqBody =
+            {
+                email, 
+                alarm: {
+                    name: alarm, 
+                    when: date
+                }
+            };
+
+            const res = await axios.post(url, reqBody);
+
+            console.log(res.status, res.statusText, res.data);
+
+            if (res.status === 200)
+            {
+                return true;
+            }
+        }
+        catch(err)
+        {
+            if (err.res)
+            {
+                const res = err.res;
+
+                console.log(res.status, res.statusText, res.data);
+            }
+        } 
+
+        return false;
+    }
+
+
+    async getAlarms(email)
+    {
+        try
+        {
+            const url = `${this.baseURL}/alarms?email=${email}`;
+
+            const res = await axios.get(url);
+
+            console.log(res.status, res.statusText, res.data);
+            
+            if (res.status === 200)
+            {
+                return res.data;
+            }
+        }
+        catch(err)
+        {
+            if (err.res)
+            {
+                const res = err.res;
+
+                console.log(res.status, res.statusText, res.data);
+            }
+        } 
+
+        return [];
+    }
+
+    async delAlarms(email, name, time)
+    {
+        try
+        {
+            const url = `${this.baseURL}/alarms?email=${email}&name=${name}&time=${time}`;
+
+            const res = await axios.delete(url);
+
+            console.log(res.status, res.statusText, res.data);
+            
+            if (res.status === 200)
+            {
+                return true;
+            }
+        }
+        catch(err)
+        {
+            if (err.res)
+            {
+                const res = err.res;
+
+                console.log(res.status, res.statusText, res.data);
+            }
+        } 
+
+        return false;
+    }
 }

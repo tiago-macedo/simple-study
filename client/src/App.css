@@ -66,24 +66,26 @@ nav{
   height: 300px;
   width: 300px;
   background: white;
-  border-radius: 30px;
-  display: flex;
+  border-radius: 5px;
+  /* display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
-  margin-top: 30px;
+  align-items: center; */
+  margin-top: 15px;
   margin-left: 538px;
+  overflow-y: scroll;
 }
 
 .date{
-  height: 40px;
+  height: 80px;
   width: 450px;
   background: lightblue;
-  border-radius: 10px;
+  border-radius: 5px;
   display: flex;
   flex-direction: line;
   justify-content: space-around;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-left: 460px;
+  margin-bottom: 10px;
 }

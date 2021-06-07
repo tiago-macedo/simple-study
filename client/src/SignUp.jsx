@@ -29,7 +29,10 @@ function SignUp()
 
         if(res)
         {
+            localStorage.setItem("email", email);
+
             window.alert("Sign up Succeeded");
+            
             history.push("home");
         }
         else
