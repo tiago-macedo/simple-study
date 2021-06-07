@@ -1,9 +1,16 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import APIService from './APIService';
 
 import Disciplina from './Disciplina'
 
+const api = new APIService();
+
 function Grade(props){
+    const [list, setList] = useState([]);
+    useEffect(() => {
+        api.getClasses("teste@gmail.com").then( (l) => setList(l) );
+    }, []);
+
     const disciplinas = {
         "MAB111": {
             "nome": "Fundamentos da Computação Digital",
@@ -17,14 +24,15 @@ function Grade(props){
         }
     }
 
-    const api = new APIService();
-    const list = APIService.getAlarms("teste@gmail.com");
-
     return (
         <div className="grade">
             {
-                list.forEach((code) => {
-                    return <Disciplina nome={disciplinas[code].nome} codigo={code} Horario={disciplinas[code].horario} Periodo={disciplinas[code].periodo} feito="True"/>
+                // list.map((code) => {
+                Object.keys(disciplinas).map((code) => {
+                    if (list.includes(code)) {
+                        return <Disciplina nome={disciplinas[code].nome} codigo={code} Horario={disciplinas[code].horario} Periodo={disciplinas[code].periodo} feito />
+                    }
+                    return <Disciplina nome={disciplinas[code].nome} codigo={code} Horario={disciplinas[code].horario} Periodo={disciplinas[code].periodo} />
                 })
             }
             {/* <Disciplina nome="Fund da Computação Digital" codigo="MAB111" Horario="60" Periodo="1" feito="True"/>

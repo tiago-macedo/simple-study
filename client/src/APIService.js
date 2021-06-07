@@ -81,17 +81,16 @@ export default class APIService
         return false;
     }
 
-    async getAlarms(email)
+    async getClasses(email)
     {
         try
         {
-            const url = `${this.baseURL}/classes`;
-            const reqBody = { "email": email };
-            const res = await axios.get(url, reqBody);
+            const url = `${this.baseURL}/classes?email=${email}`;
+            const res = await axios.get(url);
+            
+            console.log(res.status, res.statusText, res.data);
 
             return res.data.classes;
-
-            console.log(res.status, res.statusText, res.data);
         }
         catch(err)
         {
@@ -99,6 +98,7 @@ export default class APIService
                 const res = err.res;
                 console.log(res.status, res.statusText, res.data);
             }
+            return err.message
         }
     }
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import DisciplinaStyle from './DisciplinaStyle';
+import './Disciplina.css';
 
 function Disciplina(props){
 
     return(
-        <div className="disciplina">
+        <div className={props.feito ? "disciplina-feita" : "disciplina"}>
             {/* organizar a partir do props.periodo */}
             <p className="nome">{props.nome}</p>
             <p className="codigo">{props.codigo}</p>

@@ -10,15 +10,8 @@ const db = admin.firestore();
 // @desc     Retorna array de códigos de matérias que já foram cursadas pelo aluno
 // @access   Public
 classesRouter.get("/", async (req, res) => {
-	/*
-	 * Expects:
-	 * {
-	 *  	email: <user-email>
-	 * }
-	 * 
-	 */
 	try {
-		const email = req.body.email;
+		const email = req.query.email;
 		const users = db.collection('users');
 		const data = { classes: [] };
 
